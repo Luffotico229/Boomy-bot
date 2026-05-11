@@ -33,7 +33,7 @@ async def on_member_join(member):
 
     # Verificar jerarquia de roles
     bot_member = guild.get_member(client.user.id)
-    if role >= bot_member.top_roles:
+    if role >= bot_member.top_role:
         print(f"⚠️  El rol '{TARGET_ROLE_NAME}' está por encima der rol del bot. Súbelo en la jerarquía.") 
         return 
 
