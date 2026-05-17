@@ -13,16 +13,26 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 intents = Intents.default()
 intents.members = True
 
+#Cliente
 client = discord.Client(intents=intents)
+
+#Arbol de Comandos
 tree = app_commands.CommandTree(client)
+client.tree = tree
+
+#Grupo /bmy
 bmy = app_commands.Group(name="bmy", description="Comandos de Boomy")
 tree.add_command(bmy)
 setup_bmy_commands(bmy)
 
+#On ready
 @client.event
 async def on_ready():
-    await tree.sync()
-    print(f"Bot conectado como {client.user}")
+    await client.wait_until_ready()
+    synced = await tree.sync()
+    print(f"✔️ {len(synced)} comandos sincronizados globalmente")
+    print(f"🤖 Bot conectado como {client.user}")
+
 
 @client.event
 async def on_member_join(member):
