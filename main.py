@@ -2,18 +2,8 @@ import os
 import discord
 from discord import Intents, app_commands
 from dotenv import load_dotenv 
-import json
-
-def cargar_autoroles():
-    try:
-        with open('autoroles.json', 'r') as f:
-            return json.load(f)
-    except:
-        return {}
-    
-def guardar_autoroles(data):
-    with open("autoroles.json", "w") as f:
-        json.dump(data, f, indent=4)
+from commands.bmy_commands import setup_bmy_commands
+from commands.utils import cargar_autoroles
 
 # Cargar token desde .env
 load_dotenv()
@@ -25,23 +15,18 @@ intents.members = True
 
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
+bmy = app_commands.Group(name="bmy", description="Comandos de Boomy")
+tree.add_command(bmy)
+setup_bmy_commands(bmy)
 
 @client.event
 async def on_ready():
     await tree.sync()
     print(f"Bot conectado como {client.user}")
 
-@tree.command(name="setautorol", description="Configura el rol que se asignará automáticamente.")
-async def setautorol(interaction, rol: discord.Role):
-    autoroles = cargar_autoroles()
-    autoroles[str(interaction.guild.id)] = rol.id
-    guardar_autoroles(autoroles)
-    await interaction.response.send_message(f"Rol configurado: {rol.name}")
-
 @client.event
 async def on_member_join(member):
     autoroles = cargar_autoroles()
-
 
     guild_id = str(member.guild.id)
 
