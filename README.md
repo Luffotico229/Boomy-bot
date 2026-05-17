@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="banner.svg" width="800">
+  <img src="banner.png" width="800">
 </p>
+
 
 <h2 align="center">⚡ Boomy Bot — Cyberpunk Edition</h2>
 
